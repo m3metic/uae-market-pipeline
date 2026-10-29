@@ -1,0 +1,38 @@
+# Stocks tracked by the pipeline: large and liquid companies on the Dubai Financial Market (DFM).
+# Symbols use Yahoo Finance's .AE suffix. Abu Dhabi (ADX) stocks are not available from Yahoo Finance.
+# Run `python -m uaemkt check-tickers` after editing to confirm every symbol returns data.
+
+history_start: "2021-01-01"   # first date fetched on a fresh run
+currency: AED
+
+tickers:
+  # Banks
+  - {symbol: EMIRATESNBD.AE, name: Emirates NBD,                exchange: DFM, sector: Banks}
+  - {symbol: DIB.AE,         name: Dubai Islamic Bank,          exchange: DFM, sector: Banks}
+  - {symbol: MASQ.AE,        name: Mashreq,                     exchange: DFM, sector: Banks}
+  - {symbol: CBD.AE,         name: Commercial Bank of Dubai,    exchange: DFM, sector: Banks}
+  # Real estate
+  - {symbol: EMAAR.AE,       name: Emaar Properties,            exchange: DFM, sector: Real Estate}
+  - {symbol: EMAARDEV.AE,    name: Emaar Development,           exchange: DFM, sector: Real Estate}
+  - {symbol: TECOM.AE,       name: TECOM Group,                 exchange: DFM, sector: Real Estate}
+  # Utilities
+  - {symbol: DEWA.AE,        name: Dubai Electricity and Water, exchange: DFM, sector: Utilities}
+  - {symbol: EMPOWER.AE,     name: Empower (district cooling),  exchange: DFM, sector: Utilities}
+  # Transport and logistics
+  - {symbol: SALIK.AE,       name: Salik,                       exchange: DFM, sector: Transport}
+  - {symbol: PARKIN.AE,      name: Parkin,                      exchange: DFM, sector: Transport}
+  - {symbol: DTC.AE,         name: Dubai Taxi Company,          exchange: DFM, sector: Transport}
+  - {symbol: AIRARABIA.AE,   name: Air Arabia,                  exchange: DFM, sector: Transport}
+  - {symbol: ARMX.AE,        name: Aramex,                      exchange: DFM, sector: Transport}
+  # Financials and investment
+  - {symbol: DFM.AE,         name: Dubai Financial Market,      exchange: DFM, sector: Financials}
+  - {symbol: DIC.AE,         name: Dubai Investments,           exchange: DFM, sector: Financials}
+  # Consumer, telecoms and education
+  - {symbol: TALABAT.AE,     name: Talabat,                     exchange: DFM, sector: Consumer & Services}
+  - {symbol: TAALEEM.AE,     name: Taaleem,                     exchange: DFM, sector: Consumer & Services}
+  - {symbol: DU.AE,          name: du (EITC),                   exchange: DFM, sector: Consumer & Services}
+
+checks:
+  max_staleness_business_days: 3     # fail if the newest price is older than this (UAE weekend: Sat-Sun)
+  max_abs_daily_move: 0.30           # warn on single-day moves above 30% (possible split or bad tick)
+  min_ticker_coverage: 0.9           # fail if fewer than 90% of tickers returned data

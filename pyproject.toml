@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uaemkt"
+version = "0.1.0"
+description = "Daily data pipeline and dashboard for UAE stocks listed on the Dubai Financial Market"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "duckdb>=1.0",
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "pyarrow>=14",
+    "pyyaml>=6.0",
+    "yfinance>=0.2.40",
+]
+
+[project.optional-dependencies]
+dashboard = ["streamlit>=1.35", "plotly>=5.20"]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "DTZ"]

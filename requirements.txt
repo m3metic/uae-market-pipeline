@@ -1,0 +1,6 @@
+# Dashboard dependencies (used by Streamlit Community Cloud).
+# The pipeline itself is installed with:  pip install -e .
+streamlit>=1.35
+plotly>=5.20
+pandas>=2.0
+pyarrow>=14

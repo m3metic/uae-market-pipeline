@@ -1,0 +1,62 @@
+# Fetch new prices every UAE trading day, run the quality checks, recompute the
+# metrics and publish the results to the `data` branch, which the dashboard reads.
+#
+# The DFM closes at 15:00 UAE time (11:00 UTC). This runs at 12:30 UTC
+# (16:30 UAE), Monday to Friday. GitHub may start scheduled runs a little late.
+# If the quality checks fail, the run fails, nothing is published, and GitHub
+# emails the repository owner.
+
+name: Daily data update
+
+on:
+  schedule:
+    - cron: "30 12 * * 1-5"
+  workflow_dispatch: {}       # allows a manual run from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: pip install -e .
+
+      - name: Restore previously published data
+        run: |
+          if git ls-remote --exit-code --heads origin data > /dev/null; then
+            git fetch --depth 1 origin data
+            git checkout FETCH_HEAD -- data
+            git reset -q      # keep the files, unstage them from main
+          else
+            echo "No data branch yet: full history will be downloaded"
+          fi
+
+      - name: Fetch, check and transform
+        run: python -m uaemkt run
+
+      - name: Publish to the data branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p /tmp/publish/data
+          cp data/*.parquet data/quality_report.json /tmp/publish/data/
+          cd /tmp/publish
+          git init -q -b data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -q -m "Data as of $(python -c 'import json;print(json.load(open("data/quality_report.json"))["stats"]["latest_date"])')"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" data

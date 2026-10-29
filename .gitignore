@@ -1,0 +1,8 @@
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+# Pipeline outputs live on the `data` branch, published by the scheduled workflow.
+data/
