@@ -4,7 +4,7 @@
 
 Every UAE trading day, a scheduled job downloads the latest prices for 19 large DFM-listed companies, runs data-quality checks, computes performance and risk metrics in SQL, and publishes the results to a Streamlit dashboard.
 
-**Live dashboard:** _add your Streamlit link here_
+**Live dashboard:** [uae-market.streamlit.app](https://uae-market.streamlit.app/)
 
 ## What it does
 
