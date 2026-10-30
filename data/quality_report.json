@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "errors": [],
+  "warnings": [
+    "75 rows dated on a UAE weekend day"
+  ],
+  "stats": {
+    "rows": 19695,
+    "symbols_with_data": 19,
+    "symbols_expected": 19,
+    "first_date": "2021-01-03",
+    "latest_date": "2026-10-30",
+    "business_days_since_latest": 0
+  },
+  "run_at_utc": "2026-10-30T18:08:27+00:00",
+  "source": "Yahoo Finance via yfinance"
+}
